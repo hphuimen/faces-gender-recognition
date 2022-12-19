@@ -11,10 +11,12 @@ from models.AlexNet import AlexNet
 from data.MyDataset import BitmojiDataset
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn import functional as F
+
+from models.VGGNet import vgg
 from utils import *
 
 def test(net, test_loader):
-    net.load_state_dict(torch.load("wights/AlexNet1.params"))
+    net.load_state_dict(torch.load("wights/VGG.params"))
     net.eval()
     labels = []
     y_pre = []
@@ -34,7 +36,8 @@ def test(net, test_loader):
 
 
 if __name__ == '__main__':
-    net = AlexNet()
+    conv_arch = ((1, 32), (1, 64), (1, 128), (1, 256), (1, 256))
+    net = vgg(conv_arch)
     filename = "D:/data/dl/test.csv"
 
     test_img_dir = "D:/data/dl/BitmojiDataset/testimages/"
@@ -52,10 +55,10 @@ if __name__ == '__main__':
     print("acc: %f, precision: %f, recall: %f ,f1: %f" %(acc, precision, recall, f1))
 
     class_names = np.array(["female", "male"])
-    plot_confusion_matrix(labels, y_pre, class_names)
+    plot_confusion_matrix(labels, y_pre, class_names, title="VGG confusion matrix")
     plt.show()
 
-    plot_roc(labels, y_pre)
+    plot_roc(labels, y_pre, title="VGG ROC Curve")
 
 
 

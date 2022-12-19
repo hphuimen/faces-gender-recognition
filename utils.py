@@ -1,5 +1,6 @@
 # 混淆矩阵
 import numpy as np
+import pandas as pd
 from sklearn.utils.multiclass import unique_labels
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
@@ -88,11 +89,14 @@ def f1_test(y_test, y_pre):
     return f1
 
 
-def plot_roc(y_test, y_pre):
+def plot_roc(y_test, y_pre, title="Roc"):
     FPR, TPR, threshhold = metrics.roc_curve(y_test, y_pre, pos_label=1)  # pos_label是定义为正例的标签，与真实值要对应，
     AUC = auc(FPR, TPR)
     plt.plot(FPR, TPR, label='ROC curvem(area = %0.2f)' % AUC, marker='o', color='b', linestyle='-')
     plt.legend(loc='lower right')
     plt.xlabel('FPR')
     plt.ylabel('TPR')
+    plt.title(title)
     plt.show()
+
+

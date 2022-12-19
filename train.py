@@ -11,9 +11,11 @@ from models.AlexNet import AlexNet
 from data.MyDataset import BitmojiDataset
 from torch.utils.tensorboard import SummaryWriter
 
+from models.VGGNet import  vgg
+
 
 def train(net, train_loader, num_epochs, loss, optimizer, num_batchs):
-    writer = SummaryWriter("runs/ALex2")
+    writer = SummaryWriter("runs/VGG")
     net.train()
     for i in range(num_epochs):
         for index, (x, y) in enumerate(train_loader):
@@ -29,7 +31,7 @@ def train(net, train_loader, num_epochs, loss, optimizer, num_batchs):
             print(f'epoch: {i}, batch: {index}, loss: {train_loss:.3f}, train acc {train_acc:.3f}')
 
     writer.close()
-    torch.save(net.state_dict(), 'wights/AlexNet_t.params')
+    torch.save(net.state_dict(), 'wights/VGG.params')
 
 
 def accuracy(y_hat, y):
@@ -45,9 +47,10 @@ if __name__ == '__main__':
 
     num_epochs = 5
     batch_size = 256
-    lr = 0.00005
+    lr = 0.0001
 
-    net = AlexNet()
+    conv_arch = ((1, 32), (1, 64), (1, 128), (1, 256), (1, 256))
+    net = vgg(conv_arch)
 
     loss = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
